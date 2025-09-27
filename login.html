@@ -1,0 +1,55 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login - Modern Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="StyleSheet.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <div class="logo">OS</div>
+            <h1>Modern Store</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label>Username</label>
+            <input type="text" id="loginUsername" required>
+            <label>Password</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit" class="btn primary">Login</button>
+            <center><p><a href="forget.html">Forgot Password?</a></p></center>
+        </form>
+       
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="JavaScript.js"></script>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            let username = document.getElementById("loginUsername").value;
+            let password = document.getElementById("loginPassword").value;
+
+            const users = JSON.parse(localStorage.getItem("users") || "[]");
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                // خزّن المستخدم الحالي
+                localStorage.setItem("user", JSON.stringify({ username: user.username, email: user.email }));
+                alert("Welcome " + user.username);
+                window.location.href = "index.html";
+            } else {
+                alert("Invalid username or password");
+            }
+        });
+    </script>
+
+</body>
+</html>

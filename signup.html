@@ -1,0 +1,63 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Sign Up - Modern Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="StyleSheet.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <div class="logo">OS</div>
+            <h1>Modern Store</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Create Account</h2>
+        <form id="signupForm">
+            <label>Username</label>
+            <input type="text" id="signupUsername" required>
+            <label>Email</label>
+            <input type="email" id="signupEmail" required>
+            <label>Password</label>
+            <input type="password" id="signupPassword" required>
+            <label>Confirm Password</label>
+            <input type="password" id="signupConfirm" required>
+            <button type="submit" class="btn primary">Sign Up</button>
+        </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="JavaScript.js"></script>
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            let username = document.getElementById("signupUsername").value;
+            let email = document.getElementById("signupEmail").value;
+            let password = document.getElementById("signupPassword").value;
+            let confirmPassword = document.getElementById("signupConfirm").value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            // حفظ المستخدم في لستة المستخدمين
+            const users = JSON.parse(localStorage.getItem("users") || "[]");
+            users.push({ username, email, password });
+            localStorage.setItem("users", JSON.stringify(users));
+
+            // حفظ المستخدم الحالي (active user)
+            localStorage.setItem("user", JSON.stringify({ username, email }));
+
+            alert("Account created successfully!");
+            window.location.href = "index.html";
+        });
+    </script>
+
+</body>
+</html>

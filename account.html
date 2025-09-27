@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="StyleSheet.css" rel="stylesheet" />
+    <style>
+        /* Account Page Styling */
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .account-container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+            .account-container h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+                color: #222;
+            }
+
+        .account-info {
+            text-align: left;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            background: #f9fafc;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+            .account-info p {
+                font-size: 1.1rem;
+                margin: 10px 0;
+            }
+
+            .account-info strong {
+                color: #444;
+            }
+
+        #logout-btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background: #0077ff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+            #logout-btn:hover {
+                background: #005fcc;
+            }
+
+    </style>
+</head>
+<body>
+    <!--<nav>
+        <div class="logo">My Store</div>
+        <div class="nav-buttons" id="navButtons"></div>
+    </nav>-->
+
+    <div class="account-container">
+        <h1>My Account</h1>
+        <div class="account-info">
+            <p><strong>Username:</strong> <span id="accUsername"></span></p>
+            <p><strong>Email:</strong> <span id="accEmail"></span></p>
+        </div>
+
+        <button id="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="JavaScript.js"></script>
+    <script>
+        let user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+            document.getElementById("accUsername").textContent = user.username;
+            document.getElementById("accEmail").textContent = user.email;
+        } else {
+            document.getElementById("accUsername").textContent = "Guest";
+            document.getElementById("accEmail").textContent = "Not logged in";
+        }
+
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.href = "index.html";
+        }
+    </script>
+
+
+</body>
+</html>
