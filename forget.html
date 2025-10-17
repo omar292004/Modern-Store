@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Forgot Password - Modern Store</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <link href="StyleSheet.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="StyleSheet.css" rel="stylesheet">
 </head>
 <body>
   <header>
@@ -19,9 +19,9 @@
     <h2>Forgot Password</h2>
     <form id="forgetForm">
       <label>Username</label>
-      <input type="text" id="forgetUsername" required>
+      <input type="text" id="forgetUsername" class="form-control mb-2" required>
       <label>Email</label>
-      <input type="email" id="forgetEmail" required>
+      <input type="email" id="forgetEmail" class="form-control mb-2" required>
       <button type="submit" class="btn btn-primary mt-2">Send Code</button>
     </form>
 
@@ -33,47 +33,37 @@
     </div>
   </main>
 
-  <!-- ✅ EmailJS Library -->
+  <!-- ✅ EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    // Initialize EmailJS
     (function() {
-      emailjs.init("cHE_aPzeIandEzH84"); // Your Public Key from EmailJS dashboard
+      emailjs.init("cHE_aPzeIandEzH84"); // Your EmailJS public key
     })();
 
     let verificationCode = "";
 
-    // Send reset code function
     function sendResetCode(email) {
-      verificationCode = Math.floor(100000 + Math.random() * 900000); // Random 6-digit code
+      verificationCode = Math.floor(100000 + Math.random() * 900000); // 6-digit code
 
-      // Send using EmailJS
       emailjs.send("service_6hf1npt", "template_8n8df7s", {
-        to_email: email,
+        email: email, // 👈 match this with your EmailJS variable name
         code: verificationCode
       })
       .then(() => {
-        alert("✅ Code sent to " + email);
+        alert("✅ Code sent successfully to " + email);
       })
       .catch((error) => {
         console.error("EmailJS Error:", error);
-        alert("❌ Failed to send email. Check console for details.");
+        alert("❌ Failed to send email. Please check console for details.");
       });
     }
 
-    // Verify the code
-    function verifyCode(inputCode) {
-      return inputCode == verificationCode;
-    }
-
-    // Form logic
     const forgetForm = document.getElementById("forgetForm");
     const codeSection = document.getElementById("codeSection");
 
     forgetForm.addEventListener("submit", function(e) {
       e.preventDefault();
       sendResetCode(document.getElementById("forgetEmail").value);
-
       forgetForm.style.display = "none";
       codeSection.style.display = "block";
     });
@@ -83,7 +73,7 @@
     };
 
     document.getElementById("verifyCodeBtn").onclick = function() {
-      if (verifyCode(document.getElementById("codeInput").value)) {
+      if (document.getElementById("codeInput").value == verificationCode) {
         window.location.href = "change-password.html";
       } else {
         alert("❌ Invalid code. Please try again.");
@@ -91,6 +81,6 @@
     };
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
