@@ -86,3 +86,21 @@ window.onload = function () {
         hideAccountButton();
     }
 };
+function sendCode() {
+  const email = document.getElementById("email").value;
+  const code = Math.floor(100000 + Math.random() * 900000); // 6-digit code
+
+  // Send via EmailJS
+  emailjs.send("service_6hf1npt", "template_8n8df7s", {
+      to_email: email,
+      code: code
+  })
+  .then(() => {
+      alert("Code sent successfully to " + email);
+  })
+  .catch(error => {
+      console.error("Failed to send code:", error);
+      alert("Something went wrong. Please try again.");
+  });
+}
+
