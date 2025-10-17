@@ -1,62 +1,96 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Forgot Password - Modern Store</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link href="StyleSheet.css" rel="stylesheet" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Forgot Password - Modern Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="StyleSheet.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <div class="brand">
-            <div class="logo">OS</div>
-            <h1>Modern Store</h1>
-        </div>
-    </header>
+  <header>
+    <div class="brand">
+      <div class="logo">OS</div>
+      <h1>Modern Store</h1>
+    </div>
+  </header>
 
-    <main class="container">
-        <h2>Forgot Password</h2>
-        <form id="forgetForm">
-            <label>Username</label>
-            <input type="text" id="forgetUsername" required>
-            <label>Email</label>
-            <input type="email" id="forgetEmail" required>
-            <button type="submit" class="btn primary">Send Code</button>
-        </form>
-        <div id="codeSection" style="display:none;">
-            <label>Enter Code</label>
-            <input type="text" id="codeInput">
-            <button id="verifyCodeBtn" class="btn">Submit Code</button>
-            <button id="resendBtn" class="btn">Resend Code</button>
-        </div>
-    </main>
+  <main class="container mt-4">
+    <h2>Forgot Password</h2>
+    <form id="forgetForm">
+      <label>Username</label>
+      <input type="text" id="forgetUsername" required>
+      <label>Email</label>
+      <input type="email" id="forgetEmail" required>
+      <button type="submit" class="btn btn-primary mt-2">Send Code</button>
+    </form>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="JavaScript.js"></script>
-    <script>
-        const forgetForm = document.getElementById("forgetForm");
-        const codeSection = document.getElementById("codeSection");
-        forgetForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            sendResetCode(forgetEmail.value);
-            alert("Code sent. Check your email.");
+    <div id="codeSection" style="display:none;">
+      <label>Enter Code</label>
+      <input type="text" id="codeInput" class="form-control mb-2">
+      <button id="verifyCodeBtn" class="btn btn-success me-2">Submit Code</button>
+      <button id="resendBtn" class="btn btn-secondary">Resend Code</button>
+    </div>
+  </main>
 
-            // أخفي الفورم
-            forgetForm.style.display = "none";
+  <!-- ✅ EmailJS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    // Initialize EmailJS
+    (function() {
+      emailjs.init("cHE_aPzeIandEzH84"); // Your Public Key from EmailJS dashboard
+    })();
 
-            // أظهر إدخال الكود
-            codeSection.style.display = "block";
-        });
+    let verificationCode = "";
 
-        document.getElementById("resendBtn").onclick = function () { sendResetCode(forgetEmail.value) };
-        document.getElementById("verifyCodeBtn").onclick = function () {
-            if (verifyCode(document.getElementById("codeInput").value)) {
-                window.location.href = "change-password.html";
-            } else {
-                alert("Invalid code, please try again.");
-            }
-        };
-    </script>
+    // Send reset code function
+    function sendResetCode(email) {
+      verificationCode = Math.floor(100000 + Math.random() * 900000); // Random 6-digit code
+
+      // Send using EmailJS
+      emailjs.send("service_6hf1npt", "template_8n8df7s", {
+        to_email: email,
+        code: verificationCode
+      })
+      .then(() => {
+        alert("✅ Code sent to " + email);
+      })
+      .catch((error) => {
+        console.error("EmailJS Error:", error);
+        alert("❌ Failed to send email. Check console for details.");
+      });
+    }
+
+    // Verify the code
+    function verifyCode(inputCode) {
+      return inputCode == verificationCode;
+    }
+
+    // Form logic
+    const forgetForm = document.getElementById("forgetForm");
+    const codeSection = document.getElementById("codeSection");
+
+    forgetForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      sendResetCode(document.getElementById("forgetEmail").value);
+
+      forgetForm.style.display = "none";
+      codeSection.style.display = "block";
+    });
+
+    document.getElementById("resendBtn").onclick = function() {
+      sendResetCode(document.getElementById("forgetEmail").value);
+    };
+
+    document.getElementById("verifyCodeBtn").onclick = function() {
+      if (verifyCode(document.getElementById("codeInput").value)) {
+        window.location.href = "change-password.html";
+      } else {
+        alert("❌ Invalid code. Please try again.");
+      }
+    };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
